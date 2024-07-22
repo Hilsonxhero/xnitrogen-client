@@ -5,6 +5,8 @@ import AuthRoutes from './AuthRoutes';
 import { useAuthStore } from '@/stores/auth';
 
 import { storeToRefs } from "pinia";
+import { usePortalStore } from '@/stores/portal';
+
 
 
 export const router = createRouter({
@@ -19,26 +21,11 @@ export const router = createRouter({
     ]
 });
 
-// router.beforeEach(async (to, from, next) => {
-//     // redirect to login page if not logged in and trying to access a restricted page
-//     const publicPages = ['/auth/login'];
-//     const authRequired = !publicPages.includes(to.path);
-//     const auth: any = useAuthStore();
-
-//     if (to.matched.some((record) => record.meta.requiresAuth)) {
-//         if (authRequired && !auth.user) {
-//             auth.returnUrl = to.fullPath;
-//             return next('/auth/login');
-//         } else next();
-//     } else {
-//         next();
-//     }
-// });
-
 
 
 router.beforeEach(async (to, from, next) => {
     const store = useAuthStore();
+    const portalStore = usePortalStore();
 
     if (to.name !== "auth") {
         await store.init();
@@ -49,16 +36,13 @@ router.beforeEach(async (to, from, next) => {
         !store.loggedIn
     ) {
 
-        console.log("noooooooo");
 
         next({ name: "auth" });
     }
-    console.log("store.loggedIn", store.loggedIn);
 
     if (to.meta.guest && store.loggedIn) {
-        console.log("guest");
 
-        next({ name: "user-dashboard" });
+        next({ name: "user-dashboard", params: { id: portalStore.selected } });
     }
 
     next();

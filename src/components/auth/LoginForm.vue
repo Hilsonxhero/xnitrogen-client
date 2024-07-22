@@ -9,7 +9,7 @@ import google from '@/assets/images/svgs/google-icon.svg';
 import facebook from '@/assets/images/svgs/facebook-icon.svg';
 const loader = ref(false);
 const end = ref<any>(null);
-
+const user_data = ref({});
 const code = ref(null);
 const show_otp_code = ref(false);
 const valid = ref(false);
@@ -30,6 +30,7 @@ async function validate(values: any, { setErrors }: any) {
     const data = await authStore.authenticate(formDate);
     end.value = data.ttl * 1000;
     show_otp_code.value = true;
+    user_data.value = data?.data;
     emit('change', end.value);
     loader.value = false;
 }
@@ -37,7 +38,7 @@ async function validate(values: any, { setErrors }: any) {
 
 <template>
     <template v-if="show_otp_code">
-        <Otp :username="username" :end="end" @reset="show_otp_code = false" />
+        <Otp :data="user_data" :username="username" :end="end" @reset="show_otp_code = false" />
     </template>
 
     <template v-else>

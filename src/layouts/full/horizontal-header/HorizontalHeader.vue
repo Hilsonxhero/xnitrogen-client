@@ -49,28 +49,25 @@ const getCart = computed(() => {
                 </div>
             </v-locale-provider>
 
-
-
-            <v-btn class="hidden-lg-and-up ms-3" icon rounded="sm" variant="flat"
-                @click.stop="customizer.SET_SIDEBAR_DRAWER" size="small">
+            <v-btn class="hidden-lg-and-up ms-3" icon rounded="sm" variant="flat" @click.stop="customizer.SET_SIDEBAR_DRAWER" size="small">
                 <Menu2Icon size="20" stroke-width="1.5" />
             </v-btn>
 
             <!-- search mobile -->
-            <v-btn class="hidden-lg-and-up ml-3" icon rounded="sm" variant="flat" size="small" @click="searchbox">
+            <!-- <v-btn class="hidden-lg-and-up ml-3" icon rounded="sm" variant="flat" size="small" @click="searchbox">
                 <SearchIcon size="17" stroke-width="1.5" />
             </v-btn>
 
             <v-sheet v-if="showSearch" class="search-sheet v-col-12">
                 <Searchbar :closesearch="searchbox" />
-            </v-sheet>
+            </v-sheet> -->
 
             <!-- ------------------------------------------------>
             <!-- Search part -->
             <!-- ------------------------------------------------>
-            <v-sheet class="mx-2 d-none d-lg-block">
+            <!-- <v-sheet class="mx-2 d-none d-lg-block">
                 <Searchbar />
-            </v-sheet>
+            </v-sheet> -->
 
             <!---/Search part -->
 
@@ -100,17 +97,16 @@ const getCart = computed(() => {
             <!-- ---------------------------------------------- -->
             <!-- ShoppingCart -->
             <!-- ---------------------------------------------- -->
-            <v-btn icon variant="text" color="primary" to="/ecommerce/checkout">
+            <!-- <v-btn icon variant="text" color="primary" to="/ecommerce/checkout">
                 <v-badge color="error" :content="getCart?.length">
                     <ShoppingCartIcon stroke-width="1.5" size="22" />
                 </v-badge>
-            </v-btn>
+            </v-btn> -->
 
             <!-- right sidebar -->
-            <v-btn class="hidden-lg-and-up ml-3" icon rounded="sm" @click.stop="appsdrawer = !appsdrawer"
-                variant="flat">
+            <!-- <v-btn class="hidden-lg-and-up ml-3" icon rounded="sm" @click.stop="appsdrawer = !appsdrawer" variant="flat">
                 <GridDotsIcon size="17" stroke-width="1.5" />
-            </v-btn>
+            </v-btn> -->
 
             <!-- ---------------------------------------------- -->
             <!-- User Profile -->

@@ -16,7 +16,6 @@ import AOS from 'aos';
 onMounted(() => {
     AOS.init();
 });
-
 </script>
 
 <template>
@@ -26,13 +25,13 @@ onMounted(() => {
 
         <!----------->
         <!--Content-->
-        <MainBanner />
+        <!-- <MainBanner />
         <OurProducts />
         <FrameWorks />
-        <UserReview />
+        <UserReview /> -->
         <Features />
-        <AskQuestion />
-        <BuyNow />
+        <!-- <AskQuestion />
+        <BuyNow /> -->
         <!----------->
         <!--Footer-->
         <Footer />

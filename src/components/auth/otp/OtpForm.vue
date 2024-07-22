@@ -29,6 +29,9 @@ const props = defineProps({
     },
     end: {
         type: String
+    },
+    data: {
+        type: Object
     }
 });
 const authStore = useAuthStore();
@@ -54,8 +57,15 @@ const handleSendCode = async () => {
         if (data.success) {
             await authStore.init();
 
+            console.log('props.data', props.data?.has_account);
+
+            if (!props.data?.has_account || props.data?.projects_count == 0) {
+                router.push({ name: 'auth-steps-config' });
+            } else {
+                router.push({ name: 'user-dashboard', params: { id: 1 } });
+            }
+
             // route.query.backUrl ? router.push('route.query.backUrl') : router.push({ name: 'user-dashboard' });
-            router.push({ name: 'user-dashboard' });
         } else {
             error.value = data.data;
         }

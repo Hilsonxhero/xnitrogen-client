@@ -3,10 +3,10 @@ import { router } from '@/router';
 
 import ApiService from "@/services/ApiService";
 
-import {computed,ref} from 'vue'
+import { computed, ref } from 'vue'
 
 export const useAuthStore = defineStore("auth", () => {
-    const user = ref("test");
+    const user = ref({});
     const isLoggedIn = ref(false);
     const checked = ref(false);
     const errors = ref(null);
@@ -28,14 +28,12 @@ export const useAuthStore = defineStore("auth", () => {
             try {
                 const { data } = await ApiService.get(`application/user/init`);
 
-                console.log("data",data);
-                
+
                 user.value = data?.data?.user;
                 isLoggedIn.value = data?.data?.is_logged_in;
                 checked.value = true;
 
-                console.log("user.value",user.value);
-                
+
 
                 return data
             } catch (error) {
@@ -56,7 +54,7 @@ export const useAuthStore = defineStore("auth", () => {
     };
 
 
-    const login = async (form : any) => {
+    const login = async (form: any) => {
         try {
             checked.value = false;
             const { data } = await ApiService.post(`application/auth/otp/login`, form);
@@ -68,7 +66,7 @@ export const useAuthStore = defineStore("auth", () => {
 
     };
 
-    const authenticate = async (form : any) => {
+    const authenticate = async (form: any) => {
         try {
             const { data } = await ApiService.post(`application/auth/otp/authenticate`, form);
             return data;
@@ -80,7 +78,7 @@ export const useAuthStore = defineStore("auth", () => {
     const logout = async () => {
         try {
             checked.value = false;
-            const { data } = await ApiService.post(`application/auth/logout`,{});
+            const { data } = await ApiService.post(`application/auth/logout`, {});
             user.value = null;
             isLoggedIn.value = false;
         } catch (error) {

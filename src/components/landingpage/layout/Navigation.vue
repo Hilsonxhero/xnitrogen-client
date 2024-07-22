@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import QuickLinks from '@/components/landingpage/layout/PageMenuQuicklinks.vue';
 import AppsLink from '@/components/landingpage/layout/PageMegamenu.vue';
 import { demosMegamenu, appsMegamenu } from '@/_mockApis/landingpage/lpPage';
@@ -83,9 +83,16 @@ import { HelpIcon, ChevronDownIcon } from 'vue-tabler-icons';
             </div>
         </v-sheet>
     </v-menu>
-    <v-btn variant="text" color="primary" class="custom-hover-primary nav-links" href="https://demos.adminmart.com/premium/vue/modernize-vuejs/docs/index.html" target="_blank">Documentation</v-btn>
-    <v-btn variant="text" color="primary" class="custom-hover-primary nav-links" href="https://adminmart.com/support/" target="_blank">Support</v-btn>
-    <v-btn class="custom-hover-primary bg-primary ml-2 text-white" flat href="/auth/login" target="_blank"
-        ><span class="text-white">Login</span></v-btn
+    <v-btn
+        variant="text"
+        color="primary"
+        class="custom-hover-primary nav-links"
+        href="https://demos.adminmart.com/premium/vue/modernize-vuejs/docs/index.html"
+        target="_blank"
+        >Documentation</v-btn
     >
+    <v-btn variant="text" color="primary" class="custom-hover-primary nav-links" href="https://adminmart.com/support/" target="_blank"
+        >Support</v-btn
+    >
+    <v-btn class="custom-hover-primary bg-primary ml-2 text-white" flat to="/auth/login"><span class="text-white">Login</span></v-btn>
 </template>

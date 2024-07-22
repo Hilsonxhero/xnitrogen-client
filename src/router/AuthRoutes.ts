@@ -1,20 +1,28 @@
 const AuthRoutes = {
     path: '/auth',
     component: () => import('@/layouts/blank/BlankLayout.vue'),
-    meta: {
-        guest: true,
-    },
+
     children: [
         {
-            name: 'Landing Page',
+            name: 'landing',
             path: '/',
             component: () => import('@/views/pages/landingpage/index.vue')
         },
         {
             name: 'auth',
             path: '/auth/login',
+            meta: {
+                guest: true,
+            },
             component: () => import('@/views/authentication/SideLogin.vue')
         },
+
+        {
+            name: 'auth-steps-config',
+            path: '/auth/steps/config',
+            component: () => import('@/views/authentication/steps/config.vue')
+        },
+
         {
             name: 'Boxed Login',
             path: '/auth/login2',
