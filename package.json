@@ -44,7 +44,7 @@
     "vue3-print-nb": "^0.1.4",
     "vue3-recaptcha-v2": "1.0.1",
     "vuedraggable": "^2.24.3",
-    "vuetify": "^3.5.10",
+    "vuetify": "^3.4.11",
     "yup": "^0.32.11"
   },
   "devDependencies": {

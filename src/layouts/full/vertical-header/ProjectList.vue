@@ -71,7 +71,7 @@ const selected = computed(() => authStore?.user?.projects?.find((item, index) =>
                     <template v-slot:prepend>
                         <component :is="AppsIcon" size="20" class="mr-2" />
                     </template>
-                    <router-link :to="{ name: 'user-dashboard', params: { id: project?.id } }" class="text-decoration-none text-dark">
+                    <router-link :to="{ name: 'user-dashboard', params: { id: project?.id } }" class="text-decoration-none text-inherit">
                         <v-list-item-title v-text="project?.title"> </v-list-item-title>
                     </router-link>
                 </v-list-item>

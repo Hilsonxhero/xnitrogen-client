@@ -12,7 +12,7 @@ const customizer = useCustomizerStore();
 
 <template>
     <!-----RTL LAYOUT------->
-    <v-locale-provider  v-if="customizer.setRTLLayout"  rtl >
+    <v-locale-provider v-if="customizer.setRTLLayout" rtl>
         <v-app
             :theme="customizer.actTheme"
             :class="[
@@ -23,8 +23,16 @@ const customizer = useCustomizerStore();
             ]"
         >
             <!---Customizer location left side--->
-            <v-navigation-drawer app temporary elevation="10" location="left" v-model="customizer.Customizer_drawer" width="320" class="left-customizer">
-            <Customizer />
+            <v-navigation-drawer
+                app
+                temporary
+                elevation="10"
+                location="left"
+                v-model="customizer.Customizer_drawer"
+                width="320"
+                class="left-customizer"
+            >
+                <Customizer />
             </v-navigation-drawer>
             <VerticalSidebarVue v-if="!customizer.setHorizontalLayout" />
             <VerticalHeaderVue v-if="!customizer.setHorizontalLayout" />
@@ -51,8 +59,8 @@ const customizer = useCustomizerStore();
         </v-app>
     </v-locale-provider>
 
-     <!-----LTR LAYOUT------->
-    <v-locale-provider  v-else> 
+    <!-----LTR LAYOUT------->
+    <v-locale-provider v-else>
         <v-app
             :theme="customizer.actTheme"
             :class="[

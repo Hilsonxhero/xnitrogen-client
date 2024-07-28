@@ -9,36 +9,39 @@ import NavCollapse from './NavCollapse/NavCollapse.vue';
 import Profile from './profile/Profile.vue';
 import Logo from '../logo/Logo.vue';
 import RtlLogo from '../logo/RtlLogo.vue';
+import config from '@/config';
 
 const customizer = useCustomizerStore();
+console.log('config', config.Sidebar_drawer);
+console.log('customizer', customizer.Sidebar_drawer);
+
 const sidebarMenu = shallowRef(sidebarItems);
 </script>
 
 <template>
     <v-navigation-drawer
-        left
         v-model="customizer.Sidebar_drawer"
         elevation="0"
         rail-width="75"
-        mobile-breakpoint="960"
+        :location="$vuetify.display.mobile ? 'right' : undefined"
         app
         class="leftSidebar"
         :rail="customizer.mini_sidebar"
-        expand-on-hover width="270"
+        expand-on-hover
+        width="270"
     >
         <!---Logo part -->
-        <v-locale-provider  v-if="customizer.setRTLLayout"  rtl >
-        <div class="pa-5">
-            <RtlLogo />
-        </div>
+        <v-locale-provider v-if="customizer.setRTLLayout" rtl>
+            <div class="pa-5">
+                <RtlLogo />
+            </div>
         </v-locale-provider>
-        <v-locale-provider  v-else>
-        <div class="pa-5">
-            <Logo />
-        </div>
+        <v-locale-provider v-else>
+            <div class="pa-5">
+                <Logo />
+            </div>
         </v-locale-provider>
 
-        
         <!-- ---------------------------------------------- -->
         <!---Navigation -->
         <!-- ---------------------------------------------- -->

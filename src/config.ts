@@ -10,7 +10,7 @@ export type ConfigProps = {
 };
 
 const config: ConfigProps = {
-    Sidebar_drawer: null,
+    Sidebar_drawer: false,
     Customizer_drawer: false,
     mini_sidebar: false,
     setHorizontalLayout: true, // Horizontal layout
