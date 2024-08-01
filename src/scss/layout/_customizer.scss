@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .customizer-btn {
     position: fixed;
     bottom: 30px;
@@ -110,3 +114,8 @@
   .lp-header .v-toolbar {
     background: rgb(var(--v-theme-surface));
 }
+
+.invalid-feedback {
+    color: red;
+    padding-top: 0.4rem;
+  }

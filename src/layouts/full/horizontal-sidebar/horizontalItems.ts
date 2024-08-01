@@ -37,45 +37,45 @@ const horizontalItems: menu[] = [
     {
         title: 'داشبورد',
         icon: HomeIcon,
-        to: '/portal/dashboard',
+        to: 'user-dashboard',
     },
-    {
-        title: 'مدیریت  کار ها',
-        icon: AppsIcon,
-        to: '#',
-        children: [
-            {
-                title: 'بخش های سفارشی',
-                icon: CircleIcon,
-                to: '/apps/chats'
-            },
-            {
-                title: 'لیست کارها',
-                icon: CircleIcon,
-                to: '/apps/chats'
-            },
-            {
-                title: 'لیست زمان ها',
-                icon: CircleIcon,
-                to: '/apps/chats'
-            },
+    // {
+    //     title: 'مدیریت  کار ها',
+    //     icon: AppsIcon,
+    //     to: '#',
+    //     children: [
+    //         {
+    //             title: 'بخش های سفارشی',
+    //             icon: CircleIcon,
+    //             to: '/apps/chats'
+    //         },
+    //         {
+    //             title: 'لیست کارها',
+    //             icon: CircleIcon,
+    //             to: '/apps/chats'
+    //         },
+    //         {
+    //             title: 'لیست زمان ها',
+    //             icon: CircleIcon,
+    //             to: '/apps/chats'
+    //         },
 
-        ]
-    },
+    //     ]
+    // },
 
-    {
-        title: 'صفحات سفارشی',
-        icon: ClipboardIcon,
-        to: '#',
-        children: [
-            {
-                title: 'لیست صفحات',
-                icon: CircleIcon,
-                to: '/pages/pricing'
-            },
+    // {
+    //     title: 'صفحات سفارشی',
+    //     icon: ClipboardIcon,
+    //     to: '#',
+    //     children: [
+    //         {
+    //             title: 'لیست صفحات',
+    //             icon: CircleIcon,
+    //             to: '/pages/pricing'
+    //         },
 
-        ]
-    },
+    //     ]
+    // },
     {
         title: 'کاربران',
         icon: FileDescriptionIcon,
@@ -85,34 +85,34 @@ const horizontalItems: menu[] = [
             {
                 title: 'مدیریت کاربران',
                 icon: CircleIcon,
-                to: '/portal/users'
+                to: 'portal-users-index'
             },
             {
                 title: 'نقش ها و دسترسی ها',
                 icon: CircleIcon,
-                to: '/forms/form-horizontal'
+                to: 'portal-roles-index'
             },
 
         ]
     },
-    {
-        title: 'تابلو ها',
-        icon: BorderAllIcon,
-        to: '#',
-        children: [
-            {
-                title: 'مدیریت  تابلوها',
-                icon: BorderAllIcon,
-                to: '/tables/basic'
-            },
+    // {
+    //     title: 'تابلو ها',
+    //     icon: BorderAllIcon,
+    //     to: '#',
+    //     children: [
+    //         {
+    //             title: 'مدیریت  تابلوها',
+    //             icon: BorderAllIcon,
+    //             to: '/tables/basic'
+    //         },
 
-        ]
-    },
-    {
-        title: 'تنظیمات',
-        icon: SettingsAutomationIcon,
-        to: '/setting',
-    },
+    //     ]
+    // },
+    // {
+    //     title: 'تنظیمات',
+    //     icon: SettingsAutomationIcon,
+    //     to: '/setting',
+    // },
 ];
 
 export default horizontalItems;

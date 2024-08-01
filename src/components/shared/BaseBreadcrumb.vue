@@ -9,14 +9,14 @@ const props = defineProps({
 
 <template>
     <v-card class="bg-lightprimary elevation-0 rounded-md mb-8">
-        <div class="px-8 py-8 py-lg-0">
+        <div class="px-8 py-8 py-lg-0 lg:py-0">
             <div class="d-flex justify-space-between">
                 <div class="d-flex py-0 align-center">
                     <div>
                         <h3 class="text-h3 mb-2">{{ title }}</h3>
                         <v-breadcrumbs :items="breadcrumbs" class="text-h6 font-weight-medium pa-0 ml-n1">
                             <template v-slot:divider>
-                                <div class="d-flex align-center text-h3 mt-n4">.</div>
+                                <div class="d-flex align-center text-h3 mt-n1">.</div>
                             </template>
                             <template v-slot:title="{ item }">
                                 <h6 class="text-medium-emphasis text-subtitle-1">{{ item.title }}</h6>

@@ -67,5 +67,10 @@
        "portal_boards_management_store" :"ایجاد تابلو",
        "portal_boards_management_update" :"ویرایش تابلو",
        "portal_boards_management_delete" :"حذف تابلو"
+   },
+   "$vuetify" : {
+    "dataFooter" : {
+        "itemsPerPageText" : "wwwwwwwwwwww"
+    }
    }
 }

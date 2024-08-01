@@ -5,7 +5,7 @@ const props = defineProps({ item: Object, level: Number });
 
 <template>
     <!---Single Item-->
-    <router-link :to="`${item.to}`" class="navItemLink rounded-md" :disabled="item.disabled">
+    <router-link :to="{ name: item.to, params: { id: $route.params.id } }" class="navItemLink rounded-md" :disabled="item.disabled">
         <!---If icon-->
         <i class="navIcon"> <Icon :item="item.icon" :level="level" /></i>
         <span>{{ item.title }}</span>

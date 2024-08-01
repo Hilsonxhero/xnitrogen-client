@@ -21,7 +21,6 @@ export const usePortalStore = defineStore("portal", () => {
     const setSelectedProject = async (payload = null) => {
         try {
             if (payload == null) {
-
                 selected_project.value = selected.value ? authStore?.user?.projects?.find((item, index) => item?.id == selected.value) : authStore?.user?.projects[0]
             } else {
                 window.localStorage.setItem("selected_project", payload);

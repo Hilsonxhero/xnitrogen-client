@@ -25,6 +25,7 @@ import 'vue3-easy-data-table/dist/style.css';
 //i18
 import { createI18n } from 'vue-i18n';
 import messages from '@/utils/locales/messages';
+import { initVeeValidate } from "@/core/plugin/vee-validate";
 
 //ScrollTop
 import VueScrollTo from 'vue-scrollto';
@@ -33,7 +34,7 @@ import VueScrollTo from 'vue-scrollto';
 import VueEasyLightbox from 'vue-easy-lightbox';
 
 const i18n = createI18n({
-    locale: 'en',
+    locale: 'fa',
     messages: messages,
     silentTranslationWarn: true,
     silentFallbackWarn: true
@@ -58,6 +59,7 @@ app.use(VueRecaptcha, {
     alterDomain: false // default: false
 });
 app.use(i18n);
+initVeeValidate()
 app.use(Maska);
 app.use(VueApexCharts);
 app.use(vuetify).mount('#app');

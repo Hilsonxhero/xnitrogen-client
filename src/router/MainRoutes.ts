@@ -18,6 +18,21 @@ const MainRoutes = {
             component: () => import('@/views/portal/users/index.vue')
         },
 
+        {
+            name: 'portal-roles-index',
+            path: 'roles',
+            component: () => import('@/views/portal/roles/index.vue')
+        },
+        {
+            name: 'portal-roles-create',
+            path: 'roles/create',
+            component: () => import('@/views/portal/roles/create.vue')
+        },
+        {
+            name: 'portal-roles-edit',
+            path: 'roles/edit/:role',
+            component: () => import('@/views/portal/roles/edit.vue')
+        },
         // {
         //     name: 'eCommerce',
         //     path: '/dashboards/ecommerce',

@@ -6,6 +6,8 @@ import { useAuthStore } from '@/stores/auth';
 import { Form } from 'vee-validate';
 import { useRoute, useRouter } from 'vue-router';
 import ApiService from '@/services/ApiService';
+import { usePortalStore } from '@/stores/portal';
+
 const router = useRouter();
 
 const form = ref({
@@ -13,6 +15,7 @@ const form = ref({
 });
 const loader = ref(false);
 const authStore = useAuthStore();
+const portalStore = usePortalStore();
 
 async function validate(values: any, { setErrors }: any) {
     loader.value = true;
@@ -22,12 +25,11 @@ async function validate(values: any, { setErrors }: any) {
     };
 
     const data = await ApiService.post('application/portal/projects/setup', formDate);
-    console.log('data', data);
 
     if (data?.data?.success) {
-        console.log('wowwwww');
-
-        router.push({ name: 'user-dashboard', params: { id: 1 } });
+        await authStore.verify();
+        portalStore.setSelectedProject(data.data.data.id);
+        router.push({ name: 'user-dashboard', params: { id: data.data.data.id } });
     }
 
     // emit('change', end.value);
