@@ -63,19 +63,7 @@ const horizontalItems: menu[] = [
     //     ]
     // },
 
-    // {
-    //     title: 'صفحات سفارشی',
-    //     icon: ClipboardIcon,
-    //     to: '#',
-    //     children: [
-    //         {
-    //             title: 'لیست صفحات',
-    //             icon: CircleIcon,
-    //             to: '/pages/pricing'
-    //         },
 
-    //     ]
-    // },
     {
         title: 'کاربران',
         icon: FileDescriptionIcon,
@@ -91,6 +79,20 @@ const horizontalItems: menu[] = [
                 title: 'نقش ها و دسترسی ها',
                 icon: CircleIcon,
                 to: 'portal-roles-index'
+            },
+
+        ]
+    },
+
+    {
+        title: 'صفحات سفارشی',
+        icon: ClipboardIcon,
+        to: '#',
+        children: [
+            {
+                title: 'لیست صفحات',
+                icon: CircleIcon,
+                to: 'portal-pages-index'
             },
 
         ]

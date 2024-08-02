@@ -1,20 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick } from 'vue';
+import { ref, onMounted, nextTick, watch } from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
 import ApiService from '@/services/ApiService';
 import { useRoute } from 'vue-router';
 import { PlusIcon, EditIcon, TrashIcon, CheckIcon, XIcon, ArrowBackUpIcon } from 'vue-tabler-icons';
 import { useDebounceFn } from '@vueuse/core';
-import InviteUserDialog from '@/components/portal/users/InviteUserDialog.vue';
-import { usePortalStore } from '@/stores/portal';
-import { useAuthStore } from '@/stores/auth';
-
-const authStore = useAuthStore();
-
-const portalStore = usePortalStore();
-
-const page = ref({ title: 'مدیریت اعضای تیم' });
+const debouncedFn = useDebounceFn(() => {
+    fetchData();
+}, 300);
+const handleOnSearch = () => {
+    debouncedFn();
+};
+const page = ref({ title: 'مدیریت نقش های کاربری' });
 const breadcrumbs = ref([
     {
         title: 'داشبورد',
@@ -22,62 +20,47 @@ const breadcrumbs = ref([
         to: { name: 'user-dashboard' }
     },
     {
-        title: 'مدیریت اعضای تیم',
+        title: 'مدیریت نقش های کاربری',
         disabled: true,
         href: '#'
     }
 ]);
 
+const headers = ref([
+    { title: ' عنوان', key: 'title' },
+    // { title: 'دسته گروه', key: 'parent_name' },
+    { title: 'عملیات', key: 'actions' }
+]);
+const tableData = ref([]);
+const form = ref({
+    email: null,
+    role: null
+});
+const route = useRoute();
 const editedIndex = ref(-1);
 const editedItem = ref({});
 const defaultItem = ref({});
 const visible_snackbar = ref(false);
 const snackbar_text = ref(null);
-const dialogDelete = ref(false);
-
-const headers = ref([
-    { title: 'نام کاربری', key: 'username' },
-    { title: 'ایمیل', key: 'email' },
-    { title: 'شماره همراه', key: 'phone' },
-    { title: 'سطح دسترسی', key: 'role' },
-    { title: 'وضعیت', key: 'status' },
-    { title: 'عملیات', key: 'actions' }
-]);
-const tableData = ref([]);
-
 const pager = ref({});
 const current_page = ref(1);
-const search = ref('');
-const route = useRoute();
-const is_visible_create = ref(false);
 const table_loading = ref(true);
+const search = ref('');
 const fetchData = async () => {
     try {
         let params = {
             page: current_page.value,
             q: search.value
         };
-        const { data } = await ApiService.query(`application/portal/projects/${route.params.id}/users`, {
+        const { data } = await ApiService.query(`application/portal/projects/${route.params.id}/roles`, {
             params: params
         });
-        tableData.value = data.data.members;
+        tableData.value = data.data.roles;
         pager.value = data.data.pager;
         table_loading.value = false;
     } catch (error) {}
 };
-
-const loadItems = ({ page, itemsPerPage, sortBy }) => {
-    table_loading.value = true;
-    current_page.value = page;
-    fetchData();
-};
-
-const debouncedFn = useDebounceFn(() => {
-    fetchData();
-}, 300);
-const handleOnSearch = () => {
-    debouncedFn();
-};
+const dialogDelete = ref(false);
 
 const deleteItem = (item: any) => {
     editedIndex.value = tableData.value.indexOf(item);
@@ -86,7 +69,7 @@ const deleteItem = (item: any) => {
 };
 const deleteItemConfirm = async () => {
     try {
-        const { data } = await ApiService.delete(`application/portal/projects/${route.params.id}/users/${editedItem.value.id}`);
+        const { data } = await ApiService.delete(`application/portal/projects/${route.params.id}/roles/${editedItem.value.id}`);
         if (data.success) {
             tableData.value.splice(editedIndex.value, 1);
             closeDelete();
@@ -101,6 +84,12 @@ const closeDelete = () => {
         editedItem.value = Object.assign({}, defaultItem.value);
         editedIndex.value = -1;
     });
+};
+
+const loadItems = ({ page, itemsPerPage, sortBy }) => {
+    table_loading.value = true;
+    current_page.value = page;
+    fetchData();
 };
 
 watch(
@@ -153,50 +142,34 @@ onMounted(() => {
                             </v-toolbar-title>
 
                             <v-btn
-                                @click="is_visible_create = true"
+                                :to="{ name: 'portal-roles-create', params: { id: $route.params.id } }"
                                 class="me-2 text-none"
                                 flat
                                 color="primary"
                                 prepend-icon="mdi-plus"
                                 variant="flat"
                             >
-                                ایجاد کاربر
+                                ایجاد نقش کاربری
                             </v-btn>
                         </v-toolbar>
                     </template>
-                    <template v-slot:item.role="{ value }">
+
+                    <template v-slot:item.status="{ value }">
                         <div>
-                            <template v-if="value">
-                                <v-chip> {{ value?.title }} </v-chip>
+                            <v-chip color="success"> فعال </v-chip>
+                        </div>
+                    </template>
+
+                    <!-- <template v-slot:item.parent_name="{ value }">
+                        <div>
+                            <template v-if="value?.parent_name">
+                                {{ value?.parent_name }}
                             </template>
                             <template v-else>
-                                <v-chip color="warning"> راهبر پروژه </v-chip>
+                                <v-chip> گروه اصلی </v-chip>
                             </template>
                         </div>
-                    </template>
-                    <template v-slot:item.phone="{ value }">
-                        <div>
-                            <template v-if="value">
-                                <v-chip> {{ value?.phone }} </v-chip>
-                            </template>
-                            <template v-else>
-                                <v-chip color="info"> ندارد </v-chip>
-                            </template>
-                        </div>
-                    </template>
-                    <template v-slot:item.status="{ item }">
-                        <div>
-                            <template v-if="item?.status == 'active'">
-                                <v-chip color="success"> فعال </v-chip>
-                            </template>
-                            <template v-if="item?.status == 'inactive'">
-                                <v-chip color="warning"> غیرفعال </v-chip>
-                            </template>
-                            <template v-if="item?.status == 'ban'">
-                                <v-chip color="error"> مسدود </v-chip>
-                            </template>
-                        </div>
-                    </template>
+                    </template> -->
                     <template v-slot:item.actions="{ item }">
                         <v-btn size="30" icon variant="flat" class="grey100">
                             <v-avatar size="22">
@@ -206,8 +179,7 @@ onMounted(() => {
                                 <v-list>
                                     <v-list-item
                                         :link="true"
-                                        :to="{ name: 'portal-users-edit', params: { id: $route.params.id, user: item?.id } }"
-                                        value="action"
+                                        :to="{ name: 'portal-roles-edit', params: { id: $route.params.id, role: item?.id } }"
                                         hide-details
                                         min-height="38"
                                     >
@@ -215,25 +187,20 @@ onMounted(() => {
                                             <v-avatar size="20" class="mr-2">
                                                 <component :is="EditIcon" stroke-width="2" size="20" />
                                             </v-avatar>
+
                                             ویرایش
                                         </v-list-item-title>
                                     </v-list-item>
 
-                                    <template
-                                        v-if="
-                                            portalStore.selected_project?.user_id !== item?.user_id && authStore?.user?.id !== item?.user_id
-                                        "
-                                    >
-                                        <v-list-item @click="deleteItem(item)" value="action" hide-details min-height="38">
-                                            <v-list-item-title>
-                                                <v-avatar size="20" class="mr-2">
-                                                    <component :is="TrashIcon" stroke-width="2" size="20" />
-                                                </v-avatar>
+                                    <v-list-item @click="deleteItem(item)" value="action" hide-details min-height="38">
+                                        <v-list-item-title>
+                                            <v-avatar size="20" class="mr-2">
+                                                <component :is="TrashIcon" stroke-width="2" size="20" />
+                                            </v-avatar>
 
-                                                حذف
-                                            </v-list-item-title>
-                                        </v-list-item>
-                                    </template>
+                                            حذف
+                                        </v-list-item-title>
+                                    </v-list-item>
                                 </v-list>
                             </v-menu>
                         </v-btn>
@@ -241,26 +208,25 @@ onMounted(() => {
                 </v-data-table-server>
             </UiParentCard>
         </v-col>
-        <InviteUserDialog v-model="is_visible_create" />
-
-        <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-                <v-card-title class="text-h5"> آیا از حذف {{ editedItem?.email }} اطمینان دارید ؟ </v-card-title>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">تایید</v-btn>
-                    <v-btn color="blue-darken-1" variant="text" @click="closeDelete">لغو</v-btn>
-                    <v-spacer></v-spacer>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
-        <v-snackbar v-model="visible_snackbar">
-            {{ snackbar_text }}
-
-            <template v-slot:actions>
-                <v-btn color="pink" variant="text" @click="visible_snackbar = false"> بستن </v-btn>
-            </template>
-        </v-snackbar>
     </v-row>
+
+    <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-card>
+            <v-card-title class="text-h5"> آیا از حذف {{ editedItem?.title }} اطمینان دارید ؟ </v-card-title>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">تایید</v-btn>
+                <v-btn color="blue-darken-1" variant="text" @click="closeDelete">لغو</v-btn>
+                <v-spacer></v-spacer>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+    <v-snackbar v-model="visible_snackbar">
+        {{ snackbar_text }}
+
+        <template v-slot:actions>
+            <v-btn color="pink" variant="text" @click="visible_snackbar = false"> بستن </v-btn>
+        </template>
+    </v-snackbar>
 </template>

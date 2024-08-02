@@ -19,6 +19,13 @@ const MainRoutes = {
         },
 
         {
+            name: 'portal-users-edit',
+            path: ':id/users/edit/:user',
+            component: () => import('@/views/portal/users/edit.vue')
+        },
+
+
+        {
             name: 'portal-roles-index',
             path: ':id/roles',
             component: () => import('@/views/portal/roles/index.vue')
@@ -32,6 +39,23 @@ const MainRoutes = {
             name: 'portal-roles-edit',
             path: ':id/roles/edit/:role',
             component: () => import('@/views/portal/roles/edit.vue')
+        },
+
+
+        {
+            name: 'portal-pages-index',
+            path: ':id/pages',
+            component: () => import('@/views/portal/pages/index.vue')
+        },
+        {
+            name: 'portal-pages-create',
+            path: ':id/pages/create',
+            component: () => import('@/views/portal/pages/create.vue')
+        },
+        {
+            name: 'portal-pages-edit',
+            path: ':id/pages/edit/:role',
+            component: () => import('@/views/portal/pages/edit.vue')
         },
 
 

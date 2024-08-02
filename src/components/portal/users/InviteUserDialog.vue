@@ -16,6 +16,7 @@
                                         type="email"
                                         v-model="form.email"
                                         label="ایمیل کاربر را وارد کنید"
+                                        hide-details="auto"
                                     ></v-text-field>
                                 </Field>
                                 <div class="invalid-feedback d-block">
@@ -25,6 +26,7 @@
                             <v-col cols="12">
                                 <Field mode="passive" name="role" v-slot="{ field }" rules="required" label="سطح دسترسی کاربر">
                                     <v-select
+                                        hide-details="auto"
                                         v-bind="field"
                                         single-line
                                         label="سطح دسترسی کاربر"
@@ -78,7 +80,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
-// common components
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
 import { tableFixedHeaderData } from '@/_mockApis/components/table/basicTables';
