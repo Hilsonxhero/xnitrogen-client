@@ -13,19 +13,21 @@ export const usePortalStore = defineStore("portal", () => {
     const selected = ref(window.localStorage.getItem("selected_project") ?? null);
 
 
+    const default_project = authStore?.user?.projects?.[0] ?? null;
 
-    const selected_project = ref(selected.value ? authStore?.user?.projects?.find((item, index) => item?.id == selected.value) : authStore?.user?.projects[0])
+    const selected_project = ref(selected.value ? authStore?.user?.projects?.find((item, index) => item?.id == selected.value) : default_project)
 
     const projects = ref([]);
 
     const setSelectedProject = async (payload = null) => {
+        let default_project = authStore?.user?.projects?.[0] ?? null;
         try {
             if (payload == null) {
-                selected_project.value = selected.value ? authStore?.user?.projects?.find((item, index) => item?.id == selected.value) : authStore?.user?.projects[0]
+                selected_project.value = selected.value ? authStore?.user?.projects?.find((item, index) => item?.id == selected.value) : default_project
             } else {
                 window.localStorage.setItem("selected_project", payload);
                 selected.value = payload;
-                selected_project.value = selected.value ? authStore?.user?.projects?.find((item, index) => item?.id == selected.value) : authStore?.user?.projects[0]
+                selected_project.value = selected.value ? authStore?.user?.projects?.find((item, index) => item?.id == selected.value) : default_project
             }
 
         } catch (error) {

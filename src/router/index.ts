@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import MainRoutes from './MainRoutes';
 import AuthRoutes from './AuthRoutes';
+import InviteRoutes from './InviteRoutes';
+
 
 import { useAuthStore } from '@/stores/auth';
 
@@ -17,7 +19,8 @@ export const router = createRouter({
             component: () => import('@/views/authentication/Error.vue')
         },
         MainRoutes,
-        AuthRoutes
+        AuthRoutes,
+        InviteRoutes
     ]
 });
 

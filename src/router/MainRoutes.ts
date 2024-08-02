@@ -1,5 +1,5 @@
 const MainRoutes = {
-    path: '/portal/:id',
+    path: '/portal',
     meta: {
         requiresAuth: true
     },
@@ -8,31 +8,33 @@ const MainRoutes = {
     children: [
         {
             name: 'user-dashboard',
-            path: 'dashboard',
+            path: ':id/dashboard',
             component: () => import('@/views/dashboard/modern/index.vue')
         },
 
         {
             name: 'portal-users-index',
-            path: 'users',
+            path: ':id/users',
             component: () => import('@/views/portal/users/index.vue')
         },
 
         {
             name: 'portal-roles-index',
-            path: 'roles',
+            path: ':id/roles',
             component: () => import('@/views/portal/roles/index.vue')
         },
         {
             name: 'portal-roles-create',
-            path: 'roles/create',
+            path: ':id/roles/create',
             component: () => import('@/views/portal/roles/create.vue')
         },
         {
             name: 'portal-roles-edit',
-            path: 'roles/edit/:role',
+            path: ':id/roles/edit/:role',
             component: () => import('@/views/portal/roles/edit.vue')
         },
+
+
         // {
         //     name: 'eCommerce',
         //     path: '/dashboards/ecommerce',

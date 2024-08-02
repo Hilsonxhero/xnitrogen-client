@@ -37,8 +37,6 @@ const form = ref({
     role: null
 });
 const route = useRoute();
-const is_visible_create = ref(false);
-const roles = ref([]);
 const editedIndex = ref(-1);
 const editedItem = ref({});
 const defaultItem = ref({});
