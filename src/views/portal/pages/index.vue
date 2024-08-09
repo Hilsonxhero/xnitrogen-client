@@ -4,15 +4,20 @@ import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
 import ApiService from '@/services/ApiService';
 import { useRoute } from 'vue-router';
-import { PlusIcon, EditIcon, TrashIcon, CheckIcon, XIcon, ArrowBackUpIcon } from 'vue-tabler-icons';
+import { PlusIcon, EditIcon, TrashIcon, CheckIcon, XIcon, ArrowBackUpIcon, CalendarIcon } from 'vue-tabler-icons';
 import { useDebounceFn } from '@vueuse/core';
+import { followerCard } from '@/_mockApis/components/widget/card';
+import proUser2 from '@/assets/images/svgs/icon-inbox.svg';
+import NoData from '@/components/common/NoData.vue';
+import { userCards } from '@/_mockApis/components/widget/card';
+
 const debouncedFn = useDebounceFn(() => {
     fetchData();
 }, 300);
 const handleOnSearch = () => {
     debouncedFn();
 };
-const page = ref({ title: 'مدیریت نقش های کاربری' });
+const page = ref({ title: 'مدیریت صفحات سفارشی' });
 const breadcrumbs = ref([
     {
         title: 'داشبورد',
@@ -20,7 +25,7 @@ const breadcrumbs = ref([
         to: { name: 'user-dashboard' }
     },
     {
-        title: 'مدیریت نقش های کاربری',
+        title: 'مدیریت  صفحات سفارشی',
         disabled: true,
         href: '#'
     }
@@ -31,11 +36,8 @@ const headers = ref([
     // { title: 'دسته گروه', key: 'parent_name' },
     { title: 'عملیات', key: 'actions' }
 ]);
-const tableData = ref([]);
-const form = ref({
-    email: null,
-    role: null
-});
+const pagesData = ref([]);
+
 const route = useRoute();
 const editedIndex = ref(-1);
 const editedItem = ref({});
@@ -52,10 +54,11 @@ const fetchData = async () => {
             page: current_page.value,
             q: search.value
         };
-        const { data } = await ApiService.query(`application/portal/projects/${route.params.id}/roles`, {
+        const { data } = await ApiService.query(`application/portal/projects/${route.params.id}/pages`, {
             params: params
         });
-        tableData.value = data.data.roles;
+
+        pagesData.value = data.data;
         pager.value = data.data.pager;
         table_loading.value = false;
     } catch (error) {}
@@ -63,7 +66,7 @@ const fetchData = async () => {
 const dialogDelete = ref(false);
 
 const deleteItem = (item: any) => {
-    editedIndex.value = tableData.value.indexOf(item);
+    editedIndex.value = pagesData.value.indexOf(item);
     editedItem.value = Object.assign({}, item);
     dialogDelete.value = true;
 };
@@ -71,7 +74,7 @@ const deleteItemConfirm = async () => {
     try {
         const { data } = await ApiService.delete(`application/portal/projects/${route.params.id}/roles/${editedItem.value.id}`);
         if (data.success) {
-            tableData.value.splice(editedIndex.value, 1);
+            pagesData.value.splice(editedIndex.value, 1);
             closeDelete();
             snackbar_text.value = 'عملیات حذف با موفقیت انجام شد';
             visible_snackbar.value = true;
@@ -86,11 +89,11 @@ const closeDelete = () => {
     });
 };
 
-const loadItems = ({ page, itemsPerPage, sortBy }) => {
-    table_loading.value = true;
-    current_page.value = page;
-    fetchData();
-};
+// const loadItems = ({ page, itemsPerPage, sortBy }) => {
+//     table_loading.value = true;
+//     current_page.value = page;
+//     fetchData();
+// };
 
 watch(
     () => search.value,
@@ -113,100 +116,66 @@ onMounted(() => {
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
         <v-col cols="12">
-            <UiParentCard>
-                <v-data-table-server
-                    v-model:items-per-page="pager.per_page"
-                    :items-length="pager.total"
-                    page-text=""
-                    :loading="table_loading"
-                    no-data-text="دیتایی پیدا نشد"
-                    items-per-page-text="تعداد نمایش"
-                    :headers="headers"
-                    :items="tableData"
-                    loading-text="در حال  بارگزاری"
-                    @update:options="loadItems"
-                >
-                    <template v-slot:top>
-                        <v-toolbar flat>
-                            <v-toolbar-title>
-                                <div class="w-[40%]">
-                                    <v-text-field
-                                        v-model="search"
-                                        label="جستجو کلمات کلیدی .."
-                                        prepend-inner-icon="mdi-magnify"
-                                        variant="outlined"
-                                        hide-details
-                                        single-line
-                                    ></v-text-field>
-                                </div>
-                            </v-toolbar-title>
-
-                            <v-btn
-                                :to="{ name: 'portal-roles-create', params: { id: $route.params.id } }"
-                                class="me-2 text-none"
-                                flat
-                                color="primary"
-                                prepend-icon="mdi-plus"
-                                variant="flat"
-                            >
-                                ایجاد نقش کاربری
-                            </v-btn>
-                        </v-toolbar>
-                    </template>
-
-                    <template v-slot:item.status="{ value }">
-                        <div>
-                            <v-chip color="success"> فعال </v-chip>
-                        </div>
-                    </template>
-
-                    <!-- <template v-slot:item.parent_name="{ value }">
-                        <div>
-                            <template v-if="value?.parent_name">
-                                {{ value?.parent_name }}
-                            </template>
-                            <template v-else>
-                                <v-chip> گروه اصلی </v-chip>
-                            </template>
-                        </div>
-                    </template> -->
-                    <template v-slot:item.actions="{ item }">
-                        <v-btn size="30" icon variant="flat" class="grey100">
-                            <v-avatar size="22">
-                                <DotsVerticalIcon size="20" color="grey100" />
-                            </v-avatar>
-                            <v-menu activator="parent">
-                                <v-list>
-                                    <v-list-item
-                                        :link="true"
-                                        :to="{ name: 'portal-roles-edit', params: { id: $route.params.id, role: item?.id } }"
-                                        hide-details
-                                        min-height="38"
-                                    >
-                                        <v-list-item-title>
-                                            <v-avatar size="20" class="mr-2">
-                                                <component :is="EditIcon" stroke-width="2" size="20" />
-                                            </v-avatar>
-
-                                            ویرایش
-                                        </v-list-item-title>
-                                    </v-list-item>
-
-                                    <v-list-item @click="deleteItem(item)" value="action" hide-details min-height="38">
-                                        <v-list-item-title>
-                                            <v-avatar size="20" class="mr-2">
-                                                <component :is="TrashIcon" stroke-width="2" size="20" />
-                                            </v-avatar>
-
-                                            حذف
-                                        </v-list-item-title>
-                                    </v-list-item>
-                                </v-list>
-                            </v-menu>
+            <v-card elevation="10" rounded="md">
+                <v-card-item>
+                    <div class="d-flex align-center justify-end">
+                        <v-btn
+                            :to="{ name: 'portal-pages-create', params: { id: $route.params.id } }"
+                            class="me-2 text-none"
+                            color="primary"
+                            prepend-icon="mdi-export-variant"
+                            variant="tonal"
+                        >
+                            ایجاد پوشه
                         </v-btn>
-                    </template>
-                </v-data-table-server>
-            </UiParentCard>
+                    </div>
+                </v-card-item>
+            </v-card>
+        </v-col>
+        <v-col cols="12">
+            <template v-if="pagesData && pagesData.length === 0">
+                <NoData>صفحه ای تا به الان ایجاد نکردید!</NoData>
+            </template>
+            <template v-else>
+                <v-row>
+                    <v-col cols="12" md="3" sm="6" v-for="(page, index) in pagesData" :key="index">
+                        <v-card elevation="10" rounded="md">
+                            <v-card-item>
+                                <v-avatar size="80" rounded="xl">
+                                    <img src="@/assets/media/folder-document.svg" width="80" />
+                                </v-avatar>
+                                <div class="mt-6">
+                                    <h5 class="text-h6 mb-2" v-text="page.title"></h5>
+                                    <div class="d-flex align-center justify-space-between">
+                                        <h6 class="text-subtitle-1 text-medium-emphasis">{{ page.create_at }}</h6>
+                                    </div>
+                                </div>
+                                <!-- <div class="mt-6">
+                                    <v-btn class="bg-lightprimary text-primary" block flat>مدیریت</v-btn>
+                                    <v-btn variant="tonal" color="info" class="mt-3" block flat>ویرایش</v-btn>
+                                    <v-btn variant="tonal" color="error" class="mt-3" block flat>حذف</v-btn>
+                                </div> -->
+
+                                <v-menu>
+                                    <template v-slot:activator="{ props }">
+                                        <!-- <v-btn color="primary" v-bind="props"> Activator slot </v-btn> -->
+                                        <v-btn variant="tonal" color="info" class="mt-3" v-bind="props" block flat>عملیات</v-btn>
+                                    </template>
+                                    <v-list>
+                                        <v-list-item
+                                            :link="true"
+                                            :to="{ name: 'portal-pages-manage', params: { id: $route.params.id, item: page?.id } }"
+                                            :value="1"
+                                        >
+                                            <v-list-item-title>مدیریت</v-list-item-title>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>
+                            </v-card-item>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </template>
         </v-col>
     </v-row>
 

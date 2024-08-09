@@ -119,3 +119,26 @@
     color: red;
     padding-top: 0.4rem;
   }
+
+  .ql-editor {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+  .ql-editor ol, .ql-editor ul {
+      padding-left: 0 !important;
+      padding-right: 1.5rem;
+  }
+  .ql-editor ol li:not(.ql-direction-rtl), .ql-editor ul li:not(.ql-direction-rtl) {
+      /* padding-left: 1.5rem; */
+      padding-right: 1.5rem;
+  }
+  .ql-editor li:not(.ql-direction-rtl)::before {
+      margin-left: 0.3rem !important;
+      margin-right: -1.5rem !important;
+      text-align: left !important;
+  }
+
+
+  .tox-tinymce {
+    font-family: YekanBakh !important;
+  }

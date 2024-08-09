@@ -53,6 +53,12 @@ const MainRoutes = {
             component: () => import('@/views/portal/pages/create.vue')
         },
         {
+            name: 'portal-pages-manage',
+            path: ':id/pages/manage/:item',
+            component: () => import('@/views/portal/pages/manage.vue')
+        },
+
+        {
             name: 'portal-pages-edit',
             path: ':id/pages/edit/:role',
             component: () => import('@/views/portal/pages/edit.vue')
